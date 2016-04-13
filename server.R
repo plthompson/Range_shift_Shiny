@@ -1,4 +1,4 @@
-load("./data/Range_shift_heatplots.RData")
+load("Range_shift_heatplots.RData")
 library(shiny)
 library(igraph)
 library(ggplot2)
