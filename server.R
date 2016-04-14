@@ -55,10 +55,10 @@ shinyServer(function(input, output, session) {
     input$com_type
     
     if(input$contrast==0){
-      ggplot(data1(),aes_string(x="patch",y="time",fill=input$response))+
+      ggplot(data1(),aes_string(y="patch",x="time",fill=input$response))+
         geom_raster()+
-        geom_point(data = filter(data1(),patch==input$i_patch,time==itime),aes_string(x="patch",y="time",fill=input$response),size=5,pch=22, color="black", stroke=2)+
-        geom_point(data = filter(data1(),patch==(input$i_patch+as.numeric(input$contrast)),time==round(input$f_time)),aes_string(x="patch",y="time",fill=input$response),size=5,pch=22, color="white", stroke=2)+
+        geom_point(data = filter(data1(),patch==input$i_patch,time==itime),aes_string(y="patch",x="time",fill=input$response),size=5,pch=22, color="black", stroke=2)+
+        geom_point(data = filter(data1(),patch==(input$i_patch+as.numeric(input$contrast)),time==round(input$f_time)),aes_string(y="patch",x="time",fill=input$response),size=5,pch=22, color="white", stroke=2)+
         theme_bw(base_size = 16)+
         removeGrid()+
         scale_color_viridis(option = "D",name="")+
@@ -66,10 +66,10 @@ shinyServer(function(input, output, session) {
         xlab("Patch")+
         ylab("Time")} else {
           
-          ggplot(data1(),aes_string(x="patch",y="time",fill=input$response))+
+          ggplot(data1(),aes_string(y="patch",x="time",fill=input$response))+
             geom_raster()+
-            geom_point(data = filter(data1(),patch==input$i_patch,time==itime),aes_string(x="patch",y="time",fill=input$response),size=5,pch=22, color="black", stroke=2)+
-            geom_point(data = filter(data1(),patch==(input$i_patch+climateV[which(sampleV==input$f_time)]),time==round(input$f_time)),aes_string(x="patch",y="time",fill=input$response),size=5,pch=22, color="white", stroke=2)+
+            geom_point(data = filter(data1(),patch==input$i_patch,time==itime),aes_string(y="patch",x="time",fill=input$response),size=5,pch=22, color="black", stroke=2)+
+            geom_point(data = filter(data1(),patch==(input$i_patch+climateV[which(sampleV==input$f_time)]),time==round(input$f_time)),aes_string(y="patch",x="time",fill=input$response),size=5,pch=22, color="white", stroke=2)+
             theme_bw(base_size = 16)+
             removeGrid()+
             scale_color_viridis(option = "D",name="")+
