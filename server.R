@@ -3,7 +3,7 @@ library(shiny)
 library(igraph)
 library(ggplot2)
 library(ggExtra)
-library(betalink)
+#library(betalink)
 library(dplyr)
 library(viridis)
 
