@@ -63,8 +63,8 @@ shinyServer(function(input, output, session) {
         removeGrid()+
         scale_color_viridis(option = "D",name="")+
         scale_fill_viridis(option = "D",name="")+
-        xlab("Patch")+
-        ylab("Time")} else {
+        ylab("Patch")+
+        xlab("Time")} else {
           
           ggplot(data1(),aes_string(y="patch",x="time",fill=input$response))+
             geom_raster()+
@@ -74,8 +74,8 @@ shinyServer(function(input, output, session) {
             removeGrid()+
             scale_color_viridis(option = "D",name="")+
             scale_fill_viridis(option = "D",name="")+
-            xlab("Patch")+
-            ylab("Time")}
+            ylab("Patch")+
+            xlab("Time")}
   })
   
   
