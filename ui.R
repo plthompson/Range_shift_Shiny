@@ -13,13 +13,13 @@ shinyUI(fluidPage(
              "press play button (above right) to animate through time"
              
            )
-  ),
-  column(5,
-         plotOutput("heatmap",width = "100%")
-         ),
-  column(4,
-         plotOutput("netfig", width="100%"),
-         plotOutput("legend")
-         )
+    ),
+    column(5,
+           plotOutput("heatmap",width = "100%")
+    ),
+    column(4,
+           plotOutput("netfig", width="100%"),
+           plotOutput("legend")
+    )
   )
 ))
