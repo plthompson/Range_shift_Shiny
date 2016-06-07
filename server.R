@@ -79,11 +79,11 @@ shinyServer(function(input, output, session) {
   })
   
   
-
   
-
   
-
+  
+  
+  
   
   
   output$netfig<-renderPlot({
@@ -94,39 +94,43 @@ shinyServer(function(input, output, session) {
     
     if(as.numeric(input$com_type)==3){
       colnames(Ints)<-rownames(Ints)<-c(paste("p",1:nprey),paste('h',1:npred1),paste("c",1:npred2)) 
-    
-    net1<-net_f(Com=Com[,which(sampleV==itime),(input$i_patch-50)],Ints)
-    if(input$contrast==50){
-      net2<-net_f(Com=Com[,which(sampleV==round(input$f_time)),((input$i_patch+climateV[which(sampleV==input$f_time)])-50)],Ints)
-    } else {
-      net2<-net_f(Com=Com[,which(sampleV==round(input$f_time)),(input$i_patch-50)],Ints)
-    }
-    
-    fullweb<-net_f(rowSums(apply(Com,3,rowSums))>0,Ints)
-    
-    set.seed(2)
-    
-    lay.mat<-data.frame(x=runif(vcount(fullweb)),y=as.numeric(factor(substring(V(fullweb)$name,1,1),levels = c("p","h","c"),ordered = T)),shape=as.numeric(factor(substring(V(fullweb)$name,1,1),levels = c("p","h","c"),ordered = T)),num=as.numeric(substring(V(fullweb)$name,3,4)), order=1:vcount(fullweb),name=as.character(V(fullweb)$name))
-    lay.mat<-lay.mat%>%
-      arrange(num)%>%
-      group_by(y)%>%
-      mutate(x=seq(0,1,length=n())[sample(1:n(),size = n(),replace=F)])%>%
-      ungroup()%>%
-      mutate(y=replace(y,y==2,2.25), y=replace(y,y==1,sample(seq(0.5,1.5, by=0.01),size = length(y[y==1]),replace = T)))
-    
-    lay.mat<-lay.mat[order(lay.mat$order),]
-    
-    lay.mat$name<-as.character(lay.mat$name)
-    
-    
-    nets_namesV<-V(metaweb(list(net1,net2)))$name
-    
-    lay.mat_sub<-lay.mat%>%
-      filter(name %in% nets_namesV)
-    
-    lay.mat_sub<-lay.mat_sub[match(nets_namesV,lay.mat_sub$name),]
-    par(pty="s")
-    network_betaplot(net1,net2,layout=as.matrix(lay.mat_sub[,1:2]),ns = "dodgerblue3",nb = "#ff7f00",na = "grey",vertex.label=NA,vertex.size=8,vertex.shape="circle",edge.arrow.size=0.5,rescale=F,asp=F, ylim=c(0.5,3.5),xlim=c(0,1))
+      
+      net1<-net_f(Com=Com[,which(sampleV==itime),(input$i_patch-50)],Ints)
+      if(input$contrast==50){
+        net2<-net_f(Com=Com[,which(sampleV==round(input$f_time)),((input$i_patch+climateV[which(sampleV==input$f_time)])-50)],Ints)
+      } else {
+        net2<-net_f(Com=Com[,which(sampleV==round(input$f_time)),(input$i_patch-50)],Ints)
+      }
+      
+      fullweb<-net_f(rowSums(apply(Com,3,rowSums))>0,Ints)
+      
+      w2e<-substring(get.edgelist(fullweb),1,1)
+      w2e_remove<-w2e[,1]=="h" & w2e[,2]=="p" | w2e[,1]=="c" & w2e[,2]=="h"
+      fullweb<-delete_edges(fullweb,E(fullweb)[w2e_remove])
+      
+      set.seed(2)
+      
+      lay.mat<-data.frame(x=runif(vcount(fullweb)),y=as.numeric(factor(substring(V(fullweb)$name,1,1),levels = c("p","h","c"),ordered = T)),shape=as.numeric(factor(substring(V(fullweb)$name,1,1),levels = c("p","h","c"),ordered = T)),num=as.numeric(substring(V(fullweb)$name,3,4)), order=1:vcount(fullweb),name=as.character(V(fullweb)$name))
+      lay.mat<-lay.mat%>%
+        arrange(num)%>%
+        group_by(y)%>%
+        mutate(x=seq(0,1,length=n())[sample(1:n(),size = n(),replace=F)])%>%
+        ungroup()%>%
+        mutate(y=replace(y,y==2,2.25), y=replace(y,y==1,sample(seq(0.5,1.5, by=0.01),size = length(y[y==1]),replace = T)))
+      
+      lay.mat<-lay.mat[order(lay.mat$order),]
+      
+      lay.mat$name<-as.character(lay.mat$name)
+      
+      
+      nets_namesV<-V(metaweb(list(net1,net2)))$name
+      
+      lay.mat_sub<-lay.mat%>%
+        filter(name %in% nets_namesV)
+      
+      lay.mat_sub<-lay.mat_sub[match(nets_namesV,lay.mat_sub$name),]
+      par(pty="s")
+      network_betaplot(net1,net2,layout=as.matrix(lay.mat_sub[,1:2]),ns = "dodgerblue3",nb = "#ff7f00",na = "grey",vertex.label=NA,vertex.size=8,vertex.shape="circle",edge.arrow.size=0.5,rescale=F,asp=F, ylim=c(0.5,3.5),xlim=c(0,1))
     } else{
       colnames(Ints)<-rownames(Ints)<-paste("s",1:nrow(Com))
       
@@ -135,7 +139,7 @@ shinyServer(function(input, output, session) {
         net2<-net_f(Com=Com[,which(sampleV==round(input$f_time)),((input$i_patch+climateV[which(sampleV==input$f_time)])-50)],Ints)
       } else {
         net2<-net_f(Com=Com[,which(sampleV==round(input$f_time)),(input$i_patch-50)],Ints)}
-        
+      
       fullweb<-net_f(rowSums(apply(Com,3,rowSums))>0,Ints)
       
       lay.mat<-as.data.frame(layout_in_circle(fullweb))
