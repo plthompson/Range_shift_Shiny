@@ -1,4 +1,4 @@
-load("Range_shift_heatplots2.RData")
+load("Range_shift_heatplots.RData")
 library(shiny)
 library(igraph)
 library(ggplot2)
@@ -21,7 +21,7 @@ envStep<-maxEnv1/nCom
 climateV<-round(Stress[StressV][sampleV]/envStep)
 itime<-2000
 dispV<-c(0.001,0.01,0.1,0.5)
-Web_types<-c("Comp","Mix","FW")
+Web_types<-c("Comp","Mixed","FW")
 nprey<-40
 npred1<-24
 npred2<-16
