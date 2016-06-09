@@ -1,4 +1,4 @@
-load("Range_shift_heatplots.RData")
+load("Range_shift_heatplots2.RData")
 library(shiny)
 library(igraph)
 library(ggplot2)
@@ -20,7 +20,7 @@ ComStart<-rev(seq(1,(maxEnv1),(maxEnv1-1)/(nCom-1)))
 envStep<-maxEnv1/nCom
 climateV<-round(Stress[StressV][sampleV]/envStep)
 itime<-2000
-dispV<-c(0.001,0.01,0.5)
+dispV<-c(0.001,0.01,0.1,0.5)
 Web_types<-c("Comp","Mix","FW")
 nprey<-40
 npred1<-24
@@ -41,12 +41,12 @@ net_f<-function(Com,Ints){
 shinyServer(function(input, output, session) {
   
   data1<-reactive({
-    data<-filter(Net_inds_3,Dispersal==dispV[as.numeric(input$disp_select)],Community==c("Competition","Mixed interactions","Food web")[as.numeric(input$com_type)])
+    data<-filter(Net_inds,Dispersal==dispV[as.numeric(input$disp_select)],Community==c("Competition","Mixed interactions","Food web")[as.numeric(input$com_type)])
     data
   })
   
   data_web<-reactive({
-    Com_select<-paste(Web_types[as.numeric(input$com_type)],input$disp_select,sep="")
+    Com_select<-paste(Web_types[as.numeric(input$com_type)],input$disp_select,sep=" ")
     net_data<-list(Com=Com_list[[Com_select]], Ints=Int_list[[as.numeric(input$com_type)]])
     net_data
   })
@@ -95,11 +95,11 @@ shinyServer(function(input, output, session) {
     if(as.numeric(input$com_type)==3){
       colnames(Ints)<-rownames(Ints)<-c(paste("p",1:nprey),paste('h',1:npred1),paste("c",1:npred2)) 
       
-      net1<-net_f(Com=Com[,which(sampleV==itime),(input$i_patch-50)],Ints)
+      net1<-net_f(Com=Com[,(input$i_patch),which(sampleV==itime)],Ints)
       if(input$contrast==50){
-        net2<-net_f(Com=Com[,which(sampleV==round(input$f_time)),((input$i_patch+climateV[which(sampleV==input$f_time)])-50)],Ints)
+        net2<-net_f(Com=Com[,((input$i_patch+climateV[which(sampleV==input$f_time)])),which(sampleV==round(input$f_time))],Ints)
       } else {
-        net2<-net_f(Com=Com[,which(sampleV==round(input$f_time)),(input$i_patch-50)],Ints)
+        net2<-net_f(Com=Com[,(input$i_patch),which(sampleV==round(input$f_time))],Ints)
       }
       
       fullweb<-net_f(rowSums(apply(Com,3,rowSums))>0,Ints)
@@ -134,11 +134,11 @@ shinyServer(function(input, output, session) {
     } else{
       colnames(Ints)<-rownames(Ints)<-paste("s",1:nrow(Com))
       
-      net1<-net_f(Com=Com[,which(sampleV==itime),(input$i_patch-50)],Ints)
+      net1<-net_f(Com=Com[,(input$i_patch),which(sampleV==itime)],Ints)
       if(input$contrast==50){
-        net2<-net_f(Com=Com[,which(sampleV==round(input$f_time)),((input$i_patch+climateV[which(sampleV==input$f_time)])-50)],Ints)
+        net2<-net_f(Com=Com[,((input$i_patch+climateV[which(sampleV==input$f_time)])),which(sampleV==round(input$f_time))],Ints)
       } else {
-        net2<-net_f(Com=Com[,which(sampleV==round(input$f_time)),(input$i_patch-50)],Ints)}
+        net2<-net_f(Com=Com[,(input$i_patch),which(sampleV==round(input$f_time))],Ints)}
       
       fullweb<-net_f(rowSums(apply(Com,3,rowSums))>0,Ints)
       
