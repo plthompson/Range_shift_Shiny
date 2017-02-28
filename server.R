@@ -20,7 +20,7 @@ ComStart<-rev(seq(1,(maxEnv1),(maxEnv1-1)/(nCom-1)))
 envStep<-maxEnv1/nCom
 climateV<-round(Stress[StressV][sampleV]/envStep)
 itime<-2000
-dispV<-c(0.001,0.01,0.1,0.5)
+dispV<-c(0.0005,0.001,0.01,0.1)
 Web_types<-c("Comp","Mixed","FW")
 nprey<-40
 npred1<-24

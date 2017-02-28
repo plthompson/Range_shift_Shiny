@@ -1,14 +1,14 @@
 library(shiny)
 
 shinyUI(fluidPage(
-  h4("Dispersal maintains the intactness of ecological networks as they reorganize under environmental change - interactive figures"),
+  h4("Dispersal governs the reorganization of ecological networks under environmental change - interactive figures"),
   h5("Patrick L. Thompson and Andrew Gonzalez"),
   fluidRow(
     column(3,
            wellPanel(
-             selectInput("response","Network property",choices=list("Link density" = "LD", "Species (nodes)" = "N","Links" = "Ltot","Connectance" = "C", "Nestedness" = "Nestedness","Compartmentalization" = "Cbar","Trophic levels" = "Trophic_levels"),selected = "LD"),
+             selectInput("response","Network property",choices=list("Link density" = "LD", "Species (nodes)" = "N","Links" = "Ltot","Connectance" = "C", "Compartmentalization" = "Cbar","Trophic levels" = "Trophic_levels"),selected = "LD"),
              selectInput("com_type", "Community",choices = list("Food web" = 3,"Competitive" = 1, "Mixed" = 2),selected = 3),
-             selectInput("disp_select","Dispersal rate",choices = list("0.001" = 1,"0.01" = 2, "0.1" = 3,"0.5" = 4),selected = 2),
+             selectInput("disp_select","Dispersal rate",choices = list("0.0005" = 1,"0.001" = 2, "0.01" = 3,"0.01" = 4),selected = 2),
              numericInput("i_patch","Initial patch (pixel with black outline)",value = 85,min = 51,max=150),
              radioButtons("contrast","Contrast (pixel with white outline)",choices = list("Same environment" = 50,"Same patch"= 0),selected = 50),
              sliderInput("f_time","Contrast time",min = 2000,max = 7000,step = 200,value = 7000,round=T,animate = F)
