@@ -3,6 +3,7 @@ library(shiny)
 shinyUI(fluidPage(
   h4("Dispersal governs the reorganization of ecological networks under environmental change - interactive figures"),
   h5("Patrick L. Thompson and Andrew Gonzalez"),
+  h6("Nature Ecology & Evolution 2017 https://www.nature.com/articles/s41559-017-0162"),
   fluidRow(
     column(3,
            wellPanel(
